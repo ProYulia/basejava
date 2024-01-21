@@ -6,28 +6,28 @@ import java.util.Arrays;
 public class ArrayStorage {
     private static final int STORAGE_SIZE = 10000;
     Resume[] storage = new Resume[STORAGE_SIZE];
-    int size = 0;
+    int size;
 
     void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     void save(Resume r) {
-        if (getIndex(r.uuid) == -1 && size < STORAGE_SIZE) {
+        if (findIndex(r.uuid) == -1 && size < STORAGE_SIZE) {
             storage[size++] = r;
         }
     }
 
     Resume get(String uuid) {
-        int i = getIndex(uuid);
-        return i >= 0 ? storage[i] : null;
+        int index = findIndex(uuid);
+        return index >= 0 ? storage[index] : null;
     }
 
     void delete(String uuid) {
-        int i = getIndex(uuid);
-        if (i >= 0) {
-            storage[i] = storage[size - 1];
+        int index = findIndex(uuid);
+        if (index >= 0) {
+            storage[index] = storage[size - 1];
             storage[--size] = null;
         }
     }
@@ -43,7 +43,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private int getIndex(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].uuid)) {
                 return i;
