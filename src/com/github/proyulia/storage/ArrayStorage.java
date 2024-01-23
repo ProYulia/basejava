@@ -17,8 +17,7 @@ public class ArrayStorage {
     private static final String NOT_FOUND_ERROR = "Resume with uuid=%s " +
             "does not exist%n";
 
-    private static final String NO_STORAGE_ERROR = "No more free com.github" +
-            ".proyulia.storage " +
+    private static final String NO_STORAGE_ERROR = "No more free storage " +
             "space left";
 
     Resume[] storage = new Resume[STORAGE_SIZE];
