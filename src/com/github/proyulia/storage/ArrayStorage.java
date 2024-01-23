@@ -4,9 +4,6 @@ import com.github.proyulia.model.Resume;
 
 import java.util.Arrays;
 
-/**
- * Array based com.github.proyulia.storage for Resumes
- */
 public class ArrayStorage {
 
     private static final int STORAGE_SIZE = 10000;
