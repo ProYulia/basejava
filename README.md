@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5120cddbf1644b728ba35daeff94c137)](https://app.codacy.com/gh/ProYulia/basejava/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
 # [Курс BaseJava (обновленный и переработанный)](http://javaops.ru/reg/basejava)
 
 ## Разработка web-приложения "База данных резюме"
