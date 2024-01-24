@@ -5,21 +5,14 @@ import com.github.proyulia.model.Resume;
 import java.util.Arrays;
 
 public class ArrayStorage {
-
     private static final int STORAGE_SIZE = 10000;
+    private static final String DUPLICATE_ERROR = "Resume with uuid=%s already exists%n";
+    private static final String NOT_FOUND_ERROR = "Resume with uuid=%s does not exist%n";
+    private static final String NO_STORAGE_ERROR = "No more free storage space left";
 
-    private static final String DUPLICATE_ERROR = "Resume with uuid=%s " +
-            "already exists%n";
+    private final Resume[] storage = new Resume[STORAGE_SIZE];
 
-    private static final String NOT_FOUND_ERROR = "Resume with uuid=%s " +
-            "does not exist%n";
-
-    private static final String NO_STORAGE_ERROR = "No more free storage " +
-            "space left";
-
-    Resume[] storage = new Resume[STORAGE_SIZE];
-
-    int size;
+    protected int size;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
