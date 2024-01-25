@@ -5,6 +5,7 @@ import com.github.proyulia.model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
+
     @Override
     protected int findIndex(String uuid) {
         Resume searchKey = new Resume();
@@ -13,27 +14,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    public void clear() {
-
+    protected void add(int insertionPoint, Resume resume) {
+        insertionPoint = -insertionPoint - 1;
+        System.arraycopy(storage, insertionPoint, storage, insertionPoint + 1, size - insertionPoint);
+        storage[insertionPoint] = resume;
     }
 
     @Override
-    public void save(Resume resume) {
-
-    }
-
-    @Override
-    public void delete(String uuid) {
-
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
-    }
-
-    @Override
-    public void update(Resume resume) {
-
+    protected void remove(int index, String uuid) {
+        System.arraycopy(storage, index, storage, index + 1, size - index);
     }
 }
