@@ -2,12 +2,13 @@ package com.github.proyulia;
 
 import com.github.proyulia.model.Resume;
 import com.github.proyulia.storage.ArrayStorage;
+import com.github.proyulia.storage.Storage;
 
 /**
  * Test for your com.github.proyulia.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private static final Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();

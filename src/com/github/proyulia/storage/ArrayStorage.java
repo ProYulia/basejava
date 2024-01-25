@@ -4,15 +4,7 @@ import com.github.proyulia.model.Resume;
 
 import java.util.Arrays;
 
-public class ArrayStorage implements Storage {
-    private static final int STORAGE_SIZE = 10000;
-    private static final String DUPLICATE_ERROR = "Resume with uuid=%s already exists%n";
-    private static final String NOT_FOUND_ERROR = "Resume with uuid=%s does not exist%n";
-    private static final String NO_STORAGE_ERROR = "No more free storage space left";
-
-    private final Resume[] storage = new Resume[STORAGE_SIZE];
-
-    protected int size;
+public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
     public void clear() {
@@ -29,17 +21,6 @@ public class ArrayStorage implements Storage {
             System.out.printf(DUPLICATE_ERROR, resume.getUuid());
         } else {
             storage[size++] = resume;
-        }
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        } else {
-            System.out.printf(NOT_FOUND_ERROR, uuid);
-            return null;
         }
     }
 
@@ -69,12 +50,7 @@ public class ArrayStorage implements Storage {
         }
     }
 
-    @Override
-    public int size() {
-        return size;
-    }
-
-    private int findIndex(String uuid) {
+    protected int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;
