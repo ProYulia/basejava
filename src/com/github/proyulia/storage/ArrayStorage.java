@@ -4,7 +4,7 @@ import com.github.proyulia.model.Resume;
 
 import java.util.Arrays;
 
-public class ArrayStorage {
+public class ArrayStorage implements Storage {
     private static final int STORAGE_SIZE = 10000;
     private static final String DUPLICATE_ERROR = "Resume with uuid=%s already exists%n";
     private static final String NOT_FOUND_ERROR = "Resume with uuid=%s does not exist%n";
@@ -14,11 +14,13 @@ public class ArrayStorage {
 
     protected int size;
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
+    @Override
     public void save(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (size >= STORAGE_SIZE) {
@@ -30,6 +32,7 @@ public class ArrayStorage {
         }
     }
 
+    @Override
     public Resume get(String uuid) {
         int index = findIndex(uuid);
         if (index >= 0) {
@@ -40,6 +43,7 @@ public class ArrayStorage {
         }
     }
 
+    @Override
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index >= 0) {
@@ -50,10 +54,12 @@ public class ArrayStorage {
         }
     }
 
+    @Override
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
+    @Override
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index >= 0) {
@@ -63,6 +69,7 @@ public class ArrayStorage {
         }
     }
 
+    @Override
     public int size() {
         return size;
     }
