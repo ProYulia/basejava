@@ -14,14 +14,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void add(int insertionPoint, Resume resume) {
+    protected void insertResume(int insertionPoint, Resume resume) {
         insertionPoint = -insertionPoint - 1;
         System.arraycopy(storage, insertionPoint, storage, insertionPoint + 1, size - insertionPoint);
         storage[insertionPoint] = resume;
     }
 
     @Override
-    protected void remove(int index, String uuid) {
+    protected void squishArray(int index, String uuid) {
         System.arraycopy(storage, index, storage, index + 1, size - index);
     }
 }

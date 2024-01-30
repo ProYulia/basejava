@@ -21,14 +21,14 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public void save(Resume resume) {
+    public final void save(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (size >= STORAGE_SIZE) {
             System.out.println(NO_STORAGE_ERROR);
         } else if (index >= 0) {
             System.out.printf(DUPLICATE_ERROR, resume.getUuid());
         } else {
-            add(index, resume);
+            insertResume(index, resume);
             size++;
         }
     }
@@ -45,12 +45,13 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public void delete(String uuid) {
+    public final void delete(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
             System.out.printf(NOT_FOUND_ERROR, uuid);
         } else {
-            remove(index, uuid);
+            squishArray(index, uuid);
+            storage[--size] = null;
         }
     }
 
@@ -60,7 +61,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public void update(Resume resume) {
+    public final void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index >= 0) {
             storage[index] = resume;
@@ -76,7 +77,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int findIndex(String uuid);
 
-    protected abstract void add(int insertionPoint, Resume resume);
+    protected abstract void insertResume(int insertionPoint, Resume resume);
 
-    protected abstract void remove(int index, String uuid);
+    protected abstract void squishArray(int index, String uuid);
 }

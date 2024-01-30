@@ -14,13 +14,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void add(int insertionPoint, Resume resume) {
+    protected void insertResume(int insertionPoint, Resume resume) {
         storage[size] = resume;
     }
 
     @Override
-    protected void remove(int index, String uuid) {
+    protected void squishArray(int index, String uuid) {
         storage[index] = storage[size - 1];
-        storage[--size] = null;
     }
 }
