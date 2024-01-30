@@ -1,13 +1,14 @@
 package com.github.proyulia.storage;
 
+import com.github.proyulia.exception.DuplicateItemException;
+import com.github.proyulia.exception.NotFoundStorageException;
+import com.github.proyulia.exception.StorageException;
 import com.github.proyulia.model.Resume;
 
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
     protected static final int STORAGE_SIZE = 10000;
-    protected static final String DUPLICATE_ERROR = "Resume with uuid=%s already exists%n";
-    protected static final String NOT_FOUND_ERROR = "Resume with uuid=%s does not exist%n";
     protected static final String NO_STORAGE_ERROR = "No more free storage space left";
 
     protected final Resume[] storage = new Resume[STORAGE_SIZE];
@@ -24,9 +25,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void save(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (size >= STORAGE_SIZE) {
-            System.out.println(NO_STORAGE_ERROR);
+            throw new StorageException(NO_STORAGE_ERROR, resume.getUuid());
         } else if (index >= 0) {
-            System.out.printf(DUPLICATE_ERROR, resume.getUuid());
+            throw new DuplicateItemException(resume.getUuid());
         } else {
             insertResume(index, resume);
             size++;
@@ -39,8 +40,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         } else {
-            System.out.printf(NOT_FOUND_ERROR, uuid);
-            return null;
+            throw new NotFoundStorageException(uuid);
         }
     }
 
@@ -48,7 +48,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void delete(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
-            System.out.printf(NOT_FOUND_ERROR, uuid);
+            throw new NotFoundStorageException(uuid);
         } else {
             squishArray(index, uuid);
             storage[--size] = null;
@@ -66,7 +66,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            System.out.printf(NOT_FOUND_ERROR, resume.getUuid());
+            throw new NotFoundStorageException(resume.getUuid());
         }
     }
 
