@@ -2,6 +2,7 @@ package com.github.proyulia.storage;
 
 import com.github.proyulia.exception.DuplicateItemException;
 import com.github.proyulia.exception.NotFoundStorageException;
+import com.github.proyulia.exception.StorageException;
 import com.github.proyulia.model.Resume;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +44,18 @@ public abstract class AbstractArrayStorageTest {
                 () -> Assertions.assertEquals(4, storage.size()),
                 () -> Assertions.assertEquals(newResume, storage.get(newResume.getUuid()))
         );
+    }
+
+    @Test
+    public void saveExcessStorageSpace() {
+        try {
+            while (storage.size() < AbstractArrayStorage.STORAGE_SIZE) {
+                storage.save(new Resume());
+            }
+        } catch (StorageException e) {
+            Assertions.fail("Unexpected exception before array is filled");
+        }
+        Assertions.assertThrows(StorageException.class, () -> storage.save(new Resume()));
     }
 
     @Test
