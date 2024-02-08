@@ -1,13 +1,11 @@
 package com.github.proyulia.storage;
 
-import com.github.proyulia.exception.DuplicateItemException;
-import com.github.proyulia.exception.NotFoundStorageException;
 import com.github.proyulia.exception.StorageException;
 import com.github.proyulia.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_SIZE = 10000;
     protected static final String NO_STORAGE_ERROR = "No more free storage space left";
 
@@ -22,37 +20,23 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public final void save(Resume resume) {
-        int index = findIndex(resume.getUuid());
+    public final void saveData(int index, Resume resume) {
         if (size >= STORAGE_SIZE) {
             throw new StorageException(NO_STORAGE_ERROR, resume.getUuid());
-        } else if (index >= 0) {
-            throw new DuplicateItemException(resume.getUuid());
-        } else {
-            insertResume(index, resume);
-            size++;
         }
+        insertResume(index, resume);
+        size++;
     }
 
     @Override
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        } else {
-            throw new NotFoundStorageException(uuid);
-        }
+    public Resume getData(int index, String uuid) {
+        return storage[index];
     }
 
     @Override
-    public final void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotFoundStorageException(uuid);
-        } else {
-            squishArray(index, uuid);
-            storage[--size] = null;
-        }
+    public final void deleteData(int index, String uuid) {
+        squishArray(index, uuid);
+        storage[--size] = null;
     }
 
     @Override
@@ -61,21 +45,14 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public final void update(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index >= 0) {
-            storage[index] = resume;
-        } else {
-            throw new NotFoundStorageException(resume.getUuid());
-        }
+    public final void updateData(int index, Resume resume) {
+        storage[index] = resume;
     }
 
     @Override
     public int size() {
         return size;
     }
-
-    protected abstract int findIndex(String uuid);
 
     protected abstract void insertResume(int insertionPoint, Resume resume);
 
