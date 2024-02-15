@@ -8,50 +8,50 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public final void save(Resume resume) {
-        int index = checkDuplicate(resume.getUuid());
-        saveData(index, resume);
+        saveData(getNotExistingSearchKey(resume.getUuid()), resume);
     }
 
     @Override
     public final Resume get(String uuid) {
-        return getData(checkIfExists(uuid), uuid);
+        return getData(getExistingSearchKey(uuid), uuid);
     }
 
 
     @Override
     public final void delete(String uuid) {
-        deleteData(checkIfExists(uuid), uuid);
+        deleteData(getExistingSearchKey(uuid), uuid);
     }
 
     @Override
     public final void update(Resume resume) {
-        int index = checkIfExists(resume.getUuid());
-        updateData(index, resume);
+        updateData(getExistingSearchKey(resume.getUuid()), resume);
     }
 
-    private int checkDuplicate(String uuid) {
-        int index = findIndex(uuid);
-        if (index >= 0) {
-            throw new DuplicateItemException(uuid);
-        }
-        return index;
-    }
-
-    private int checkIfExists(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
+    private Object getExistingSearchKey(String uuid) {
+        Object searchKey = searchKey(uuid);
+        if (!(isExist(searchKey))) {
             throw new NotFoundStorageException(uuid);
         }
-        return index;
+        return searchKey;
     }
 
-    protected abstract int findIndex(String uuid);
+    private Object getNotExistingSearchKey(String uuid) {
+        Object searchKey = searchKey(uuid);
+        if (isExist(searchKey)) {
+            throw new DuplicateItemException(uuid);
+        }
+        return searchKey;
+    }
 
-    protected abstract void saveData(int index, Resume resume);
+    protected abstract Object searchKey(String uuid);
 
-    protected abstract Resume getData(int index, String uuid);
+    protected abstract void saveData(Object searchKey, Resume resume);
 
-    protected abstract void deleteData(int index, String uuid);
+    protected abstract Resume getData(Object searchKey, String uuid);
 
-    protected abstract void updateData(int index, Resume resume);
+    protected abstract void deleteData(Object searchKey, String uuid);
+
+    protected abstract void updateData(Object searchKey, Resume resume);
+
+    protected abstract boolean isExist(Object searchKey);
 }

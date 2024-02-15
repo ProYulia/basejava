@@ -4,7 +4,7 @@ import com.github.proyulia.model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
 
-    protected int findIndex(String uuid) {
+    protected Integer searchKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;

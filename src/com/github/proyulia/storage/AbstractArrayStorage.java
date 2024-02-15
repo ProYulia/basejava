@@ -20,22 +20,22 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public final void saveData(int index, Resume resume) {
+    public final void saveData(Object index, Resume resume) {
         if (size >= STORAGE_SIZE) {
             throw new StorageException(NO_STORAGE_ERROR, resume.getUuid());
         }
-        insertResume(index, resume);
+        insertResume((Integer) index, resume);
         size++;
     }
 
     @Override
-    public Resume getData(int index, String uuid) {
-        return storage[index];
+    public Resume getData(Object index, String uuid) {
+        return storage[(int) index];
     }
 
     @Override
-    public final void deleteData(int index, String uuid) {
-        squishArray(index, uuid);
+    public final void deleteData(Object index, String uuid) {
+        squishArray((Integer) index, uuid);
         storage[--size] = null;
     }
 
@@ -45,8 +45,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public final void updateData(int index, Resume resume) {
-        storage[index] = resume;
+    public final void updateData(Object index, Resume resume) {
+        storage[(int) index] = resume;
+    }
+
+    @Override
+    protected boolean isExist(Object index) {
+        return (Integer) index >= 0;
     }
 
     @Override
