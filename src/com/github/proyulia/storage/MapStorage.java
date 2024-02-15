@@ -2,11 +2,11 @@ package com.github.proyulia.storage;
 
 import com.github.proyulia.model.Resume;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MapStorage extends AbstractStorage {
-    private final Map<String, Resume> storage = new HashMap<>();
+    private final Map<String, Resume> storage = new TreeMap<>();
 
     @Override
     protected Object searchKey(String uuid) {
